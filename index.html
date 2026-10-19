@@ -123,18 +123,30 @@
   }
 
   var wrap = document.getElementById("slots");
-  slots.forEach(function(d){
-    var p = parts(d);
-    var label = p.weekday + ", " + p.month + " " + p.day;
-    var time = p.hour + ":" + p.minute + " " + p.dayPeriod.toLowerCase().replace("am","a.m.").replace("pm","p.m.");
-    var msg = "Hi Rob — can we talk " + label + " at " + time + " Central?";
-    var a = document.createElement("a");
-    a.className = "slot";
-    a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(msg);
-    a.innerHTML = '<span class="when">' + label + '<span class="tz">' + time + " Central</span></span>" +
-                  '<span class="go">Send →</span>';
-    wrap.appendChild(a);
-  });
+  var note = document.getElementById("note");
+
+  function render(list){
+    wrap.innerHTML = "";
+    list.forEach(function(s){
+      var a = document.createElement("a");
+      a.className = "slot";
+      a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(s.msg);
+      a.innerHTML = '<span class="when">' + s.label + '<span class="tz">' + s.time + " Central</span></span>" +
+                    '<span class="go">Send →</span>';
+      wrap.appendChild(a);
+    });
+  }
+
+  function fallback(){
+    var out = [];
+    slots.forEach(function(d){
+      var p = parts(d);
+      var label = p.weekday + ", " + p.month + " " + p.day;
+      var time = p.hour + ":" + p.minute + " " + p.dayPeriod.toLowerCase().replace("am","a.m.").replace("pm","p.m.");
+      out.push({label:label, time:time, msg:"Hi Rob — can we talk " + label + " at " + time + " Central?"});
+    });
+    return out;
+  }
 
   document.getElementById("wa").href = "https://wa.me/" + PHONE + "?text=" +
     encodeURIComponent("Hi Rob — can we talk?");
@@ -142,9 +154,27 @@
   if (CALENDAR_URL) {
     var c = document.getElementById("cal");
     c.href = CALENDAR_URL; c.hidden = false;
-    document.getElementById("note").textContent =
-      "Times are Central (Chicago). Bookings confirm instantly and land on my calendar.";
+    note.textContent = "Times are Central (Chicago). Bookings confirm instantly and land on my calendar.";
   }
+
+  // Live availability published hourly by Rob's calendar job. Falls back to the
+  // standard windows if the file is missing or malformed — the page never goes empty.
+  fetch("slots.json?ts=" + Date.now(), {cache:"no-store"})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (data && data.slots && data.slots.length) {
+        render(data.slots);
+        var when = data.generated_at ? new Date(data.generated_at) : null;
+        var stamp = when ? when.toLocaleString("en-US",{timeZone:"America/Chicago",
+            weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}) : "";
+        note.textContent = "These are real open times from my calendar" +
+          (stamp ? ", updated " + stamp + " Central" : "") +
+          ". Times are Central (Chicago). None work? Just message me.";
+      } else {
+        render(fallback());
+      }
+    })
+    .catch(function(){ render(fallback()); });
 })();
 </script>
 </body>
