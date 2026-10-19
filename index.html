@@ -53,7 +53,7 @@
 
   <a class="cal" id="cal" href="#" hidden>See my calendar</a>
 
-  <p class="note" id="note">All times are Central (Chicago).</p>
+  <p class="note" id="note">Times are shown in your own time zone, with mine (Central) alongside.</p>
   <footer>— Rob</footer>
 </main>
 
@@ -67,14 +67,14 @@
   var TZ = "America/Chicago";
   var DAYS = 12;          // how far ahead to generate
   var MAX_SLOTS = 8;      // how many to show, one per day so the list reaches the weekend
-  var HOURS = {           // local appointment windows
-    0: [9,10,11],         // Sun
-    1: [],
-    2: [18,19,20],
-    3: [18,19,20],
-    4: [18,19,20],
-    5: [18,19,20],
-    6: [9,10,11]          // Sat
+  var HOURS = {           // Chicago hours that land at a civilised hour in Spain (+7)
+    0: [9,10],            // Sun
+    1: [],                // Mon
+    2: [8,9,12,13],
+    3: [8,9,12,13],
+    4: [8,9,12,13],
+    5: [8,9,12,13],
+    6: [9,10]             // Sat
   };
 
   function parts(d){
@@ -111,6 +111,23 @@
   var wrap = document.getElementById("slots");
   var note = document.getElementById("note");
 
+  // Times are shown in the visitor's own time zone, with Rob's (Central) alongside,
+  // because an evening slot in Chicago is the middle of the night in Spain.
+  var VISITOR_TZ = "America/Chicago";
+  try { VISITOR_TZ = Intl.DateTimeFormat().resolvedOptions().timeZone || VISITOR_TZ; } catch (e) {}
+
+  function partsIn(iso, tz){
+    return new Intl.DateTimeFormat("en-US",{timeZone:tz,weekday:"short",month:"short",
+      day:"numeric",hour:"numeric",minute:"2-digit",hour12:true})
+      .formatToParts(new Date(iso))
+      .reduce(function(a,p){a[p.type]=p.value;return a;},{});
+  }
+  function dayIn(iso, tz){ var p=partsIn(iso,tz); return p.weekday + ", " + p.month + " " + p.day; }
+  function clockIn(iso, tz){
+    var p = partsIn(iso, tz);
+    return p.hour + ":" + p.minute + " " + p.dayPeriod.toLowerCase().replace("am","a.m.").replace("pm","p.m.");
+  }
+
   function text(cls, str){
     var el = document.createElement("span");
     el.className = cls;
@@ -120,13 +137,21 @@
 
   function render(list){
     wrap.textContent = "";
+    var sameZone = (VISITOR_TZ === "America/Chicago");
     list.forEach(function(s){
-      if (!s || typeof s !== "object") return;
+      if (!s || !s.iso) return;
+      var label = dayIn(s.iso, VISITOR_TZ);
+      var mine  = clockIn(s.iso, VISITOR_TZ);
+      var theirs = clockIn(s.iso, "America/Chicago");
+
       var a = document.createElement("a");
       a.className = "slot";
-      a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(String(s.msg || ""));
-      var when = text("when", s.label);
-      when.appendChild(text("tz", String(s.time || "") + " Central"));
+      a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(
+        "Hi Rob — can we talk " + label + " at " + mine +
+        (sameZone ? " Central" : " my time (" + theirs + " Central)") + "?");
+      var when = text("when", label);
+      when.appendChild(text("tz", sameZone ? mine + " Central"
+                                          : mine + " your time · " + theirs + " Central (mine)"));
       a.appendChild(when);
       a.appendChild(text("go", "Send →"));
       wrap.appendChild(a);
@@ -134,38 +159,22 @@
   }
 
   function fallback(){
-    var out = [];
-    slots.forEach(function(d){
-      var p = parts(d);
-      var label = p.weekday + ", " + p.month + " " + p.day;
-      var time = p.hour + ":" + p.minute + " " + p.dayPeriod.toLowerCase().replace("am","a.m.").replace("pm","p.m.");
-      out.push({label:label, time:time, msg:"Hi Rob — can we talk " + label + " at " + time + " Central?"});
-    });
-    return out;
+    return slots.map(function(d){ return {iso: d.toISOString()}; });
   }
 
   if (CALENDAR_URL) {
     var c = document.getElementById("cal");
     c.href = CALENDAR_URL; c.hidden = false;
-    note.textContent = "Times are Central (Chicago). Bookings confirm instantly and land on my calendar.";
+    note.textContent = "Bookings confirm instantly and land on my calendar.";
   }
 
   // Live availability published hourly by Rob's calendar job. Falls back to the
-  // standard windows if the file is missing or malformed — the page never goes empty.
+  // standard windows if the file is missing or malformed - the page never goes empty.
   fetch("slots.json?ts=" + Date.now(), {cache:"no-store"})
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(data){
-      if (data && data.slots && data.slots.length) {
-        render(data.slots);
-        var when = data.generated_at ? new Date(data.generated_at) : null;
-        var stamp = when ? when.toLocaleString("en-US",{timeZone:"America/Chicago",
-            weekday:"short",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}) : "";
-        note.textContent = "Real open times from my calendar" +
-          (stamp ? ", updated " + stamp + " Central" : "") +
-          ". All times are Central (Chicago).";
-      } else {
-        render(fallback());
-      }
+      if (data && data.slots && data.slots.length) { render(data.slots); }
+      else { render(fallback()); }
     })
     .catch(function(){ render(fallback()); });
 })();
