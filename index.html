@@ -79,8 +79,9 @@
   var CALENDAR_URL = "";
 
   var TZ = "America/Chicago";
-  var DAYS = 10;          // how far ahead to generate
-  var MAX_SLOTS = 9;      // how many to show
+  var DAYS = 12;          // how far ahead to generate
+  var MAX_SLOTS = 8;      // how many to show
+  var MAX_PER_DAY = 2;    // so the list spans several days, not one evening
   var HOURS = {           // local appointment windows
     0: [9,10,11],         // Sun
     1: [],
@@ -112,10 +113,11 @@
     var dowName = pr.weekday;
     var dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(dowName);
     var hrs = HOURS[dow] || [];
-    for (var j=0;j<hrs.length && slots.length<MAX_SLOTS;j++){
+    var taken = 0;
+    for (var j=0;j<hrs.length && slots.length<MAX_SLOTS && taken<MAX_PER_DAY;j++){
       var when = localDate(+pr.year, +pr.month-1, +pr.day, hrs[j]);
       if (when.getTime() - now.getTime() < 3*3600*1000) continue; // skip anything <3h away
-      slots.push(when);
+      slots.push(when); taken++;
     }
   }
 
