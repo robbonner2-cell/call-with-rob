@@ -80,8 +80,7 @@
 
   var TZ = "America/Chicago";
   var DAYS = 12;          // how far ahead to generate
-  var MAX_SLOTS = 8;      // how many to show
-  var MAX_PER_DAY = 2;    // so the list spans several days, not one evening
+  var MAX_SLOTS = 8;      // how many to show, one per day so the list reaches the weekend
   var HOURS = {           // local appointment windows
     0: [9,10,11],         // Sun
     1: [],
@@ -113,12 +112,14 @@
     var dowName = pr.weekday;
     var dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(dowName);
     var hrs = HOURS[dow] || [];
-    var taken = 0;
-    for (var j=0;j<hrs.length && slots.length<MAX_SLOTS && taken<MAX_PER_DAY;j++){
-      var when = localDate(+pr.year, +pr.month-1, +pr.day, hrs[j]);
+    var startIdx = i % (hrs.length || 1);   // rotate the hour so 6pm/7pm/8pm all appear
+    for (var k=0;k<hrs.length && slots.length<MAX_SLOTS;k++){
+      var when = localDate(+pr.year, +pr.month-1, +pr.day, hrs[(startIdx+k)%hrs.length]);
       if (when.getTime() - now.getTime() < 3*3600*1000) continue; // skip anything <3h away
-      slots.push(when); taken++;
+      slots.push(when);
+      break;
     }
+    if (slots.length >= MAX_SLOTS) break;
   }
 
   var wrap = document.getElementById("slots");
