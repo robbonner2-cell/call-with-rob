@@ -111,14 +111,24 @@
   var wrap = document.getElementById("slots");
   var note = document.getElementById("note");
 
+  function text(cls, str){
+    var el = document.createElement("span");
+    el.className = cls;
+    el.textContent = String(str);      // text node, never parsed as markup
+    return el;
+  }
+
   function render(list){
-    wrap.innerHTML = "";
+    wrap.textContent = "";
     list.forEach(function(s){
+      if (!s || typeof s !== "object") return;
       var a = document.createElement("a");
       a.className = "slot";
-      a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(s.msg);
-      a.innerHTML = '<span class="when">' + s.label + '<span class="tz">' + s.time + " Central</span></span>" +
-                    '<span class="go">Send →</span>';
+      a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(String(s.msg || ""));
+      var when = text("when", s.label);
+      when.appendChild(text("tz", String(s.time || "") + " Central"));
+      a.appendChild(when);
+      a.appendChild(text("go", "Send →"));
       wrap.appendChild(a);
     });
   }
