@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-20T14:07:23.210853+00:00",
+ "generated_at": "2026-10-20T22:07:34.984825+00:00",
  "slots": [
   {
    "iso": "2026-10-21T09:00:00-05:00",
@@ -20,18 +20,6 @@
    "msg": "Hi Rob — can we talk Fri, Oct 23 at 1:00 p.m. Central?"
   },
   {
-   "iso": "2026-10-24T09:00:00-05:00",
-   "label": "Sat, Oct 24",
-   "time": "9:00 a.m.",
-   "msg": "Hi Rob — can we talk Sat, Oct 24 at 9:00 a.m. Central?"
-  },
-  {
-   "iso": "2026-10-25T10:00:00-05:00",
-   "label": "Sun, Oct 25",
-   "time": "10:00 a.m.",
-   "msg": "Hi Rob — can we talk Sun, Oct 25 at 10:00 a.m. Central?"
-  },
-  {
    "iso": "2026-10-27T12:00:00-05:00",
    "label": "Tue, Oct 27",
    "time": "12:00 p.m.",
@@ -48,6 +36,12 @@
    "label": "Thu, Oct 29",
    "time": "12:00 p.m.",
    "msg": "Hi Rob — can we talk Thu, Oct 29 at 12:00 p.m. Central?"
+  },
+  {
+   "iso": "2026-10-30T13:00:00-05:00",
+   "label": "Fri, Oct 30",
+   "time": "1:00 p.m.",
+   "msg": "Hi Rob — can we talk Fri, Oct 30 at 1:00 p.m. Central?"
   }
  ]
 }
