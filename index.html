@@ -168,15 +168,44 @@
     note.textContent = "Bookings confirm instantly and land on my calendar.";
   }
 
-  // Live availability published hourly by Rob's calendar job. Falls back to the
-  // standard windows if the file is missing or malformed - the page never goes empty.
+  // Live availability published hourly by Rob's calendar job.
+  // Two guards matter more than the fetch itself:
+  //   * a slot in the past is never offered, even if the published file is frozen
+  //     (a rejected push froze it for a week and the page kept showing last week);
+  //   * a file stamped more than MAX_AGE_H ago is treated as missing, so a dead
+  //     publisher degrades to the rolling built-in windows instead of lying.
+  var MAX_AGE_H = 36;
+  function usable(data){
+    if (!data || !data.slots || !data.slots.length) return null;
+    var gen = data.generated_at ? Date.parse(data.generated_at) : NaN;
+    if (isFinite(gen) && (Date.now() - gen) > MAX_AGE_H*3600*1000) return null;
+    var keep = data.slots.filter(function(s){
+      var t = (s && s.iso) ? Date.parse(s.iso) : NaN;
+      return isFinite(t) && (t - Date.now()) > 2*3600*1000;
+    });
+    return keep.length ? keep : null;
+  }
+
+  function emptyState(){
+    wrap.textContent = "";
+    var a = document.createElement("a");
+    a.className = "slot";
+    a.href = "https://wa.me/" + PHONE + "?text=" + encodeURIComponent("Hi Rob — when can we talk?");
+    var when = text("when", "No open times listed right now");
+    when.appendChild(text("tz", "Tap to message me anyway and we will find one."));
+    a.appendChild(when);
+    a.appendChild(text("go", "Message →"));
+    wrap.appendChild(a);
+  }
+
+  function paint(list){
+    if (list && list.length) { render(list); } else { emptyState(); }
+  }
+
   fetch("slots.json?ts=" + Date.now(), {cache:"no-store"})
     .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(data){
-      if (data && data.slots && data.slots.length) { render(data.slots); }
-      else { render(fallback()); }
-    })
-    .catch(function(){ render(fallback()); });
+    .then(function(data){ paint(usable(data) || fallback()); })
+    .catch(function(){ paint(fallback()); });
 })();
 </script>
 </body>
