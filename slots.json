@@ -1,36 +1,6 @@
 {
- "generated_at": "2026-10-21T05:07:31.395062+00:00",
+ "generated_at": "2026-10-28T22:35:59.680792+00:00",
  "slots": [
-  {
-   "iso": "2026-10-21T08:00:00-05:00",
-   "label": "Wed, Oct 21",
-   "time": "8:00 a.m.",
-   "msg": "Hi Rob — can we talk Wed, Oct 21 at 8:00 a.m. Central?"
-  },
-  {
-   "iso": "2026-10-22T12:00:00-05:00",
-   "label": "Thu, Oct 22",
-   "time": "12:00 p.m.",
-   "msg": "Hi Rob — can we talk Thu, Oct 22 at 12:00 p.m. Central?"
-  },
-  {
-   "iso": "2026-10-23T13:00:00-05:00",
-   "label": "Fri, Oct 23",
-   "time": "1:00 p.m.",
-   "msg": "Hi Rob — can we talk Fri, Oct 23 at 1:00 p.m. Central?"
-  },
-  {
-   "iso": "2026-10-27T12:00:00-05:00",
-   "label": "Tue, Oct 27",
-   "time": "12:00 p.m.",
-   "msg": "Hi Rob — can we talk Tue, Oct 27 at 12:00 p.m. Central?"
-  },
-  {
-   "iso": "2026-10-28T08:00:00-05:00",
-   "label": "Wed, Oct 28",
-   "time": "8:00 a.m.",
-   "msg": "Hi Rob — can we talk Wed, Oct 28 at 8:00 a.m. Central?"
-  },
   {
    "iso": "2026-10-29T12:00:00-05:00",
    "label": "Thu, Oct 29",
@@ -38,16 +8,28 @@
    "msg": "Hi Rob — can we talk Thu, Oct 29 at 12:00 p.m. Central?"
   },
   {
-   "iso": "2026-10-30T13:00:00-05:00",
-   "label": "Fri, Oct 30",
-   "time": "1:00 p.m.",
-   "msg": "Hi Rob — can we talk Fri, Oct 30 at 1:00 p.m. Central?"
+   "iso": "2026-11-04T09:00:00-06:00",
+   "label": "Wed, Nov 4",
+   "time": "9:00 a.m.",
+   "msg": "Hi Rob — can we talk Wed, Nov 4 at 9:00 a.m. Central?"
   },
   {
-   "iso": "2026-11-03T12:00:00-06:00",
-   "label": "Tue, Nov 3",
+   "iso": "2026-11-05T12:00:00-06:00",
+   "label": "Thu, Nov 5",
    "time": "12:00 p.m.",
-   "msg": "Hi Rob — can we talk Tue, Nov 3 at 12:00 p.m. Central?"
+   "msg": "Hi Rob — can we talk Thu, Nov 5 at 12:00 p.m. Central?"
+  },
+  {
+   "iso": "2026-11-06T09:00:00-06:00",
+   "label": "Fri, Nov 6",
+   "time": "9:00 a.m.",
+   "msg": "Hi Rob — can we talk Fri, Nov 6 at 9:00 a.m. Central?"
+  },
+  {
+   "iso": "2026-11-10T12:00:00-06:00",
+   "label": "Tue, Nov 10",
+   "time": "12:00 p.m.",
+   "msg": "Hi Rob — can we talk Tue, Nov 10 at 12:00 p.m. Central?"
   }
  ]
 }
