@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-03T17:14:08.244139+00:00",
+ "generated_at": "2026-11-04T06:07:19.741307+00:00",
  "slots": [
   {
    "iso": "2026-11-05T12:00:00-06:00",
@@ -24,6 +24,12 @@
    "label": "Thu, Nov 12",
    "time": "12:00 p.m.",
    "msg": "Hi Rob — can we talk Thu, Nov 12 at 12:00 p.m. Central?"
+  },
+  {
+   "iso": "2026-11-17T12:00:00-06:00",
+   "label": "Tue, Nov 17",
+   "time": "12:00 p.m.",
+   "msg": "Hi Rob — can we talk Tue, Nov 17 at 12:00 p.m. Central?"
   }
  ]
 }
