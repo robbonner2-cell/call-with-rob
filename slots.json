@@ -1,11 +1,11 @@
 {
- "generated_at": "2026-11-24T06:07:52.801803+00:00",
+ "generated_at": "2026-11-25T06:09:25.256263+00:00",
  "slots": [
   {
-   "iso": "2026-11-25T09:00:00-06:00",
+   "iso": "2026-11-25T08:00:00-06:00",
    "label": "Wed, Nov 25",
-   "time": "9:00 a.m.",
-   "msg": "Hi Rob — can we talk Wed, Nov 25 at 9:00 a.m. Central?"
+   "time": "8:00 a.m.",
+   "msg": "Hi Rob — can we talk Wed, Nov 25 at 8:00 a.m. Central?"
   },
   {
    "iso": "2026-11-26T12:00:00-06:00",
@@ -14,10 +14,10 @@
    "msg": "Hi Rob — can we talk Thu, Nov 26 at 12:00 p.m. Central?"
   },
   {
-   "iso": "2026-11-27T09:00:00-06:00",
+   "iso": "2026-11-27T12:00:00-06:00",
    "label": "Fri, Nov 27",
-   "time": "9:00 a.m.",
-   "msg": "Hi Rob — can we talk Fri, Nov 27 at 9:00 a.m. Central?"
+   "time": "12:00 p.m.",
+   "msg": "Hi Rob — can we talk Fri, Nov 27 at 12:00 p.m. Central?"
   },
   {
    "iso": "2026-12-01T12:00:00-06:00",
@@ -38,10 +38,16 @@
    "msg": "Hi Rob — can we talk Thu, Dec 3 at 12:00 p.m. Central?"
   },
   {
-   "iso": "2026-12-04T12:00:00-06:00",
+   "iso": "2026-12-04T09:00:00-06:00",
    "label": "Fri, Dec 4",
+   "time": "9:00 a.m.",
+   "msg": "Hi Rob — can we talk Fri, Dec 4 at 9:00 a.m. Central?"
+  },
+  {
+   "iso": "2026-12-08T12:00:00-06:00",
+   "label": "Tue, Dec 8",
    "time": "12:00 p.m.",
-   "msg": "Hi Rob — can we talk Fri, Dec 4 at 12:00 p.m. Central?"
+   "msg": "Hi Rob — can we talk Tue, Dec 8 at 12:00 p.m. Central?"
   }
  ]
 }
